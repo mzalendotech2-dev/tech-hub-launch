@@ -3,6 +3,16 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 
+// Hosts like Netlify don't load the repo's .env into the function runtime, so
+// server code reading process.env.SUPABASE_* would fail. Fall back to the public
+// VITE_* values Vite inlines at build time (they already ship to the browser).
+for (const [name, value] of [
+  ["SUPABASE_URL", import.meta.env['VITE_SUPABASE_URL']],
+  ["SUPABASE_PUBLISHABLE_KEY", import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY']],
+] as const) {
+  if (!process.env[name] && value) process.env[name] = value;
+}
+
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
 };
