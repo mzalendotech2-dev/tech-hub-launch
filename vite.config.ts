@@ -12,4 +12,7 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Build for Netlify (static assets in dist/, SSR as a Netlify Function).
+  // Inside the Lovable sandbox the wrapper still forces its own cloudflare preset.
+  nitro: { preset: "netlify" },
 });
