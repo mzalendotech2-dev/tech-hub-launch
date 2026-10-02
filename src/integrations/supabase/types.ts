@@ -255,7 +255,38 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      record_site_event: {
+        Args: { _event_type: string; _target: string; _visitor_id: string }
+        Returns: undefined
+      }
+      submit_application: {
+        Args: {
+          _contact_number: string
+          _course_id: string
+          _current_location: string
+          _email: string
+          _full_name: string
+        }
+        Returns: string
+      }
+      submit_contact: {
+        Args: {
+          _email: string
+          _full_name: string
+          _message: string
+          _subject: string
+        }
+        Returns: undefined
+      }
+      submit_feedback: {
+        Args: {
+          _category: string
+          _email: string
+          _full_name: string
+          _message: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "user"
