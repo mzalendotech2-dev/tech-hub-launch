@@ -14,8 +14,8 @@ export const recordSiteEvent = createServerFn({ method: 'POST' })
   .inputValidator((input: unknown) => eventSchema.parse(input))
   .handler(async ({ data }) => {
     // A browser identifier is used only to count one visit per page per day.
-    const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
-    const { error } = await supabaseAdmin.from('site_events').insert({ event_type: data.event_type, target: data.target, visitor_id: data.visitor_id, event_day: new Date().toISOString().slice(0,10) });
+    const { publicClient } = await import('./public.functions');
+    const { error } = await publicClient().rpc('record_site_event' as never, { _event_type: data.event_type, _target: data.target, _visitor_id: data.visitor_id } as never);
     if (error && error.code !== '23505') throw new Error('Could not record activity.');
     return { ok: true };
   });
